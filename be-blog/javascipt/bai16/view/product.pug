@@ -1,0 +1,26 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Danh sách sản phẩm
+        link(rel="stylesheet", href="/css/style.css")
+    body
+        header.header
+            div.container
+                h1 Cửa hàng của tôi
+        
+        main.main-content
+            div.container
+                h2 Danh sách sản phẩm
+                div.product-grid
+                    each product in products
+                        div.product-item
+                            img(src=product.thumbnail, alt=product.title)
+                            h3= product.title
+                            p.price Giá: #{product.price}đ
+                            p.description= product.description
+        
+        footer.footer
+            div.container
+                p &copy; 2026 My Shop

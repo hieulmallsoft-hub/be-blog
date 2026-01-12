@@ -1,0 +1,27 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Chi tiết sản phẩm
+        link(rel="stylesheet", href="/css/style.css")
+    body
+        header.header
+            div.container
+                h1 Cửa hàng của tôi
+        
+        main.main-content
+            div.container
+                if product
+                    div.product-detail
+                        img(src=product.thumbnail, alt=product.title, style="max-width: 400px; border-radius: 8px;")
+                        h2= product.title
+                        p.price(style="color: #e44d26; font-weight: bold; font-size: 1.5rem;") Giá: #{product.price}đ
+                        p.description= product.description
+                        a(href="/api/product", style="display: inline-block; margin-top: 20px; color: #007bff;") << Quay lại danh sách
+                else
+                    h2 Không tìm thấy sản phẩm
+        
+        footer.footer
+            div.container
+                p &copy; 2026 My Shop
