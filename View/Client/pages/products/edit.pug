@@ -1,0 +1,30 @@
+extends ../../layouts/default.pug
+
+block main
+  .row.justify-content-center
+    .col-md-6
+      h1.fw-bold.mb-4 Chỉnh sửa sản phẩm
+      if product
+        .card.p-4
+          form(action=`/products/edit/${product.id}`, method="POST")
+            .mb-3
+              label.form-label Tên sản phẩm
+              input.form-control(type="text", name="title", value=product.title, required)
+            .mb-3
+              label.form-label Giá (VNĐ)
+              input.form-control(type="number", name="price", value=product.price, required)
+            .mb-3
+              label.form-label Mô tả
+              textarea.form-control(name="description", rows="3") #{product.description}
+            .mb-3
+              label.form-label Link ảnh (Thumbnail)
+              input.form-control(type="text", name="thumbnail", value=product.thumbnail)
+            .mb-3
+              label.form-label Danh mục
+              input.form-control(type="text", name="category", value=product.category)
+            .d-grid.gap-2
+              button.btn.btn-primary(type="submit") Cập nhật
+              a.btn.btn-outline-secondary(href="/products") Hủy
+      else
+        .alert.alert-danger Không tìm thấy sản phẩm.
+        a.btn.btn-secondary(href="/products") Quay lại
