@@ -11,8 +11,11 @@ Router.get("/detail/:id", productController.getProductsByID)
 Router.get("/edit/:id", productController.editProduct)
 Router.post("/edit/:id", productController.updateProduct)
 Router.post("/add", productController.addProduct)
-Router.delete("/delete/:id", productController.deleteProduct)
+Router.get("/delete/:id", productController.deleteProduct)
 
 
 
 module.exports = Router
+
+
+
