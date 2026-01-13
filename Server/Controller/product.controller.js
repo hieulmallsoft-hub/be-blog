@@ -3,33 +3,30 @@ const Product = require("../Model/product.model")
 const getAllProducts = async (req, res) => {
     try {
         const products = await Product.find()
-        res.render("products/index", {
-            pageTitle: "Danh sách sản phẩm",
-            products: products
-        })
+        res.json(products)
     } catch (error) {
-        res.status(500).send("Lỗi Server")
+        res.status(500).json({ message: "Lỗi Server" })
     }
 }
 
 const getProductsByID = async (req, res) => {
     try {
         const product = await Product.findById(req.params.id)
-        res.render("products/detail", {
-            pageTitle: "Chi tiết sản phẩm",
-            product: product
-        })
+        if (!product) {
+            return res.status(404).json({ message: "Không tìm thấy sản phẩm" })
+        }
+        res.json(product)
     } catch (error) {
-        res.status(500).send("Không tìm thấy sản phẩm")
+        res.status(500).json({ message: "Lỗi Server" })
     }
 }
 
 const addProduct = async (req, res) => {
     try {
         const product = await Product.create(req.body)
-        res.redirect("/products")
+        res.status(201).json(product)
     } catch (error) {
-        res.status(500).send("Lỗi Server")
+        res.status(500).json({ message: "Lỗi Server" })
     }
 }
 
@@ -37,31 +34,37 @@ const addProduct = async (req, res) => {
 const deleteProduct = async (req, res) => {
     try {
         const id = req.params.id
-        await Product.findByIdAndDelete(id)
-        res.redirect("/products")
+        const product = await Product.findByIdAndDelete(id)
+        if (!product) {
+            return res.status(404).json({ message: "Không tìm thấy sản phẩm để xóa" })
+        }
+        res.json({ message: "Xóa sản phẩm thành công" })
     } catch (error) {
-        res.status(500).send("Lỗi không tìm thấy sản phẩm để xóa")
+        res.status(500).json({ message: "Lỗi khi xóa sản phẩm" })
     }
 }
 
 const editProduct = async (req, res) => {
     try {
         const product = await Product.findById(req.params.id)
-        res.render("products/edit", {
-            pageTitle: "Chỉnh sửa sản phẩm",
-            product: product
-        })
+        if (!product) {
+            return res.status(404).json({ message: "Không tìm thấy sản phẩm" })
+        }
+        res.json(product)
     } catch (error) {
-        res.status(500).send("Lỗi Server")
+        res.status(500).json({ message: "Lỗi Server" })
     }
 }
 
 const updateProduct = async (req, res) => {
     try {
-        await Product.findByIdAndUpdate(req.params.id, req.body)
-        res.redirect("/products")
+        const product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true })
+        if (!product) {
+            return res.status(404).json({ message: "Không tìm thấy sản phẩm để cập nhật" })
+        }
+        res.json(product)
     } catch (error) {
-        res.status(500).send("Lỗi không thể cập nhật sản phẩm")
+        res.status(500).json({ message: "Lỗi không thể cập nhật sản phẩm" })
     }
 }
 

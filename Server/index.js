@@ -2,10 +2,12 @@ require("dotenv").config()
 const express = require("express");
 const path = require("path");
 const app = express();
+const methodOverride = require('method-override')
+const cors = require('cors')
 const port = process.env.PORT;
-app.set('view engine', 'pug')
-app.set('views', path.join(__dirname, '../View/Client/pages'))
-app.use(express.static(path.join(__dirname, "public")))
+
+app.use(cors())
+app.use(methodOverride('_method'))
 
 // Thêm middleware để đọc dữ liệu từ form (POST)
 app.use(express.json())
