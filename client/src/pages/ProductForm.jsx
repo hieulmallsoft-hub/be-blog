@@ -12,7 +12,9 @@ const ProductForm = () => {
         price: '',
         description: '',
         thumbnail: '',
-        category: ''
+        category: '',
+        status: 'active',
+        discountPercentage: 0
     });
 
     useEffect(() => {
@@ -23,7 +25,8 @@ const ProductForm = () => {
 
     const fetchProduct = async () => {
         try {
-            const response = await axios.get(`http://localhost:3000/products/${id}`);
+            // Fetching via Admin API
+            const response = await axios.get(`http://localhost:3000/admin/products/${id}`);
             setFormData(response.data);
         } catch (error) {
             console.error('Lỗi khi lấy thông tin sản phẩm:', error);
@@ -31,18 +34,22 @@ const ProductForm = () => {
     };
 
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        const value = e.target.type === 'number' ? parseFloat(e.target.value) : e.target.value;
+        setFormData({ ...formData, [e.target.name]: value });
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             if (isEdit) {
-                await axios.patch(`http://localhost:3000/products/${id}`, formData);
+                // Update using Admin API
+                await axios.put(`http://localhost:3000/admin/products/${id}`, formData);
             } else {
-                await axios.post('http://localhost:3000/products', formData);
+                // Create using Admin API
+                await axios.post('http://localhost:3000/admin/products', formData);
             }
-            navigate('/');
+            // Navigate back to Admin Product List
+            navigate('/admin/products');
         } catch (error) {
             alert('Có lỗi xảy ra khi lưu sản phẩm');
         }
@@ -66,16 +73,42 @@ const ProductForm = () => {
                                     required
                                 />
                             </div>
+                            <div className="row">
+                                <div className="col-md-6 mb-3">
+                                    <label className="form-label">Giá (VNĐ)</label>
+                                    <input
+                                        type="number"
+                                        className="form-control"
+                                        name="price"
+                                        value={formData.price}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                </div>
+                                <div className="col-md-6 mb-3">
+                                    <label className="form-label">Giảm giá (%)</label>
+                                    <input
+                                        type="number"
+                                        className="form-control"
+                                        name="discountPercentage"
+                                        value={formData.discountPercentage}
+                                        onChange={handleChange}
+                                        min="0"
+                                        max="100"
+                                    />
+                                </div>
+                            </div>
                             <div className="mb-3">
-                                <label className="form-label">Giá (VNĐ)</label>
-                                <input
-                                    type="number"
-                                    className="form-control"
-                                    name="price"
-                                    value={formData.price}
+                                <label className="form-label">Trạng thái</label>
+                                <select
+                                    className="form-select"
+                                    name="status"
+                                    value={formData.status}
                                     onChange={handleChange}
-                                    required
-                                />
+                                >
+                                    <option value="active">Hoạt động</option>
+                                    <option value="inactive">Dừng hoạt động</option>
+                                </select>
                             </div>
                             <div className="mb-3">
                                 <label className="form-label">Mô tả</label>

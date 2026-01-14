@@ -16,13 +16,14 @@ app.use(express.urlencoded({ extended: true }))
 
 const db = require("./config/db")
 
-const productRouter = require("./Router/product.route")
-const homeRouter = require("./Router/home.route")
+const adminRouter = require("./Router/admin/dasboard.router")
+const productRouter = require("./Router/client/product.route")
+const homeRouter = require("./Router/client/home.route")
 
 
 
 
-
+app.use("/admin", adminRouter)
 app.use("/", homeRouter)
 app.use("/products", productRouter)
 

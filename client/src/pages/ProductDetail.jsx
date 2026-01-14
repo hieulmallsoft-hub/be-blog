@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
 
-const ProductDetail = () => {
+const ProductDetail = ({ isAdmin }) => {
     const { id } = useParams();
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -25,6 +25,8 @@ const ProductDetail = () => {
     if (loading) return <div className="text-center mt-5">Đang tải...</div>;
     if (!product) return <div className="container mt-5"><div className="alert alert-danger">Không tìm thấy sản phẩm.</div></div>;
 
+    const backLink = isAdmin ? '/admin/products' : '/';
+
     return (
         <div className="container mt-5">
             <div className="row">
@@ -39,7 +41,20 @@ const ProductDetail = () => {
                 </div>
                 <div className="col-md-6">
                     <h1 className="fw-bold mb-3">{product.title}</h1>
-                    <h3 className="text-primary mb-4">{product.price ? product.price.toLocaleString() : 0} VNĐ</h3>
+                    <div className="mb-4">
+                        {product.discountPercentage > 0 ? (
+                            <>
+                                <h3 className="text-danger fw-bold d-inline me-3">
+                                    {parseInt(product.priceNew).toLocaleString()} VNĐ
+                                </h3>
+                                <span className="text-muted text-decoration-line-through fs-5">
+                                    {product.price ? product.price.toLocaleString() : 0} VNĐ
+                                </span>
+                            </>
+                        ) : (
+                            <h3 className="text-primary mb-4">{product.price ? product.price.toLocaleString() : 0} VNĐ</h3>
+                        )}
+                    </div>
 
                     <div className="mb-4">
                         <span className="badge bg-secondary mb-2">{product.category || 'Chưa phân loại'}</span>
@@ -47,8 +62,10 @@ const ProductDetail = () => {
                     </div>
 
                     <div className="d-flex gap-2">
-                        <Link to={`/edit/${product._id}`} className="btn btn-warning">Chỉnh sửa</Link>
-                        <Link to="/" className="btn btn-outline-secondary">Quay lại danh sách</Link>
+                        {isAdmin && (
+                            <Link to={`/admin/products/edit/${product._id}`} className="btn btn-warning">Chỉnh sửa</Link>
+                        )}
+                        <Link to={backLink} className="btn btn-outline-secondary">Quay lại danh sách</Link>
                     </div>
                 </div>
             </div>
