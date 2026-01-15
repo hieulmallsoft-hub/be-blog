@@ -10,4 +10,4 @@ const userSchema = new Schema({
     createdAt: Date,
 });
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model("User", userSchema, "User");

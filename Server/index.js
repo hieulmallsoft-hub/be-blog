@@ -19,13 +19,14 @@ const db = require("./config/db")
 const adminRouter = require("./Router/admin/dasboard.router")
 const productRouter = require("./Router/client/product.route")
 const homeRouter = require("./Router/client/home.route")
-
+const authRouter = require("./Router/admin/auth.router")
 
 
 
 app.use("/admin", adminRouter)
 app.use("/", homeRouter)
 app.use("/products", productRouter)
+app.use("/auth", authRouter)
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);

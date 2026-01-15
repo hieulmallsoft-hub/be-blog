@@ -9,7 +9,7 @@ router.get("/products/:id", productController.getProductByID)
 router.post("/products", productController.addProduct)
 router.delete("/products/:id", productController.deleteProduct)
 router.put("/products/:id", productController.updateProduct)
-
+router.patch("/products/:id/status", productController.updateProductStatus);
 
 module.exports = router
 
