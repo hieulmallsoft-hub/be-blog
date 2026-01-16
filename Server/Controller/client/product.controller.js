@@ -25,6 +25,7 @@ const getAllProducts = async (req, res) => {
         console.error("getAllProducts:", error);
         return res.status(500).json({ message: "Lỗi Server" });
     }
+
 };
 
 // GET /products/:id
@@ -91,10 +92,44 @@ const suggestProduct = async (req, res) => {
         return res.status(500).json({ message: "Lỗi Server" });
     }
 };
+
+
+const Pagitation = async (req, res) => {
+    try {
+        const page = Math.max(parseInt(req.query.page || "1", 10), 1);
+        const limit = Math.min(Math.max(parseInt(req.query.limit || "6", 10), 1), 60);
+        const skip = (page - 1) * limit;
+
+        const filter = { deleted: false };
+
+        const total = await Product.countDocuments(filter);
+        const totalPages = Math.max(1, Math.ceil(total / limit));
+
+        const products = await Product.find(filter)
+            .sort({ position: 1, _id: -1 })
+            .skip(skip)
+            .limit(limit)
+            .lean();
+
+        return res.json({
+            data: attachPriceNewList(products), // hoặc products
+            page,
+            limit,
+            total,
+            totalPages
+        });
+    } catch (error) {
+        console.error("Pagitation:", error);
+        return res.status(500).json({ message: "Lỗi Server" });
+    }
+};
+
+
 module.exports = {
     getAllProducts,
     getProductsByID,
     findStatus,
     findProduct,
-    suggestProduct
+    suggestProduct,
+    Pagitation
 };

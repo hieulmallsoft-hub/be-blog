@@ -19,8 +19,20 @@ const Home = async (req, res) => {
     }
 }
 
+const TotalProduct = async (req, res) => {
+    try {
+        const totalProducts = await Product.countDocuments({ deleted: false });
+        res.json({
+            success: true,
+            data: totalProducts
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Lỗi Server" });
+    }
+}
 
 
 module.exports = {
-    Home
+    Home,
+    TotalProduct
 }   

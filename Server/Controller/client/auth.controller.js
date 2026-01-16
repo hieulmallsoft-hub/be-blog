@@ -1,6 +1,6 @@
-const bcrypt = require("bcryptjs"); // khuyên dùng bcryptjs cho Windows
+const bcrypt = require("bcryptjs"); 
 const jwt = require("jsonwebtoken");
-const User = require("../../Model/User.model"); // chỉnh lại path đúng theo dự án bạn
+const User = require("../../Model/User.model"); 
 
 
 // lấy token gửi cho fe lưu lại (localStorage) để gọi các API cần đăng nhập 

@@ -97,7 +97,6 @@ const updateProduct = async (req, res) => {
             if (req.body[key] !== undefined) data[key] = req.body[key];
         }
 
-        // validate status nếu bạn dùng active/inactive
         if (data.status !== undefined) {
             const allowedStatus = ["active", "inactive"];
             if (!allowedStatus.includes(data.status)) {

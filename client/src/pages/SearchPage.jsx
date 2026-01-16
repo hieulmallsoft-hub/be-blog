@@ -28,23 +28,6 @@ export default function SearchPage() {
         fetchSearch();
     }, [q]);
 
-    useEffect(() => {
-        const fetchSuggest = async () => {
-            if (!q.trim()) {
-                setProducts([]);
-                return;
-            }
-            setLoading(true);
-            try {
-                const res = await axios.get(`${API_BASE}/products/suggest?q=${encodeURIComponent(q)}`);
-                setProducts(res.data);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchSuggest();
-    }, [q]);
 
     return (
         <div className="container">

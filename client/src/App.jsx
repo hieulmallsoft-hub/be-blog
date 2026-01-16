@@ -8,6 +8,7 @@ import ProductForm from './pages/ProductForm';
 import Login from './pages/Login';
 import SearchPage from './pages/SearchPage';
 import Register from './pages/Register';
+import AdminLogin from './layouts/AdminLayout';
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
       <div className="App">
         <Routes>
           <Route path="/login" element={<Login role="user" />} />
-          <Route path="/admin/login" element={<Login role="admin" />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
           {/* Client Routes */}
           <Route path="/" element={<ClientLayout />}>
             <Route index element={<ProductList isAdmin={false} />} />
@@ -32,6 +33,7 @@ function App() {
             <Route path="products/detail/:id" element={<ProductDetail isAdmin={true} />} />
             <Route path="products/create" element={<ProductForm />} />
             <Route path="products/edit/:id" element={<ProductForm />} />
+
           </Route>
 
           {/* Fallback for old Create/Edit routes if needed, or redirect */}
